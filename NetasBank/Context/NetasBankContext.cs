@@ -5,6 +5,10 @@ using NetasBank.Models;
 namespace NetasBank.Context;
 public class NetasBankContext : DbContext
 {
+    public NetasBankContext(DbContextOptions<NetasBankContext> options)
+    : base(options)
+    { }
+
     public DbSet<TransactionDetailsModel> TransactionDetails { get; set; }
     public DbSet<TransactionsModel> Transactions { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
