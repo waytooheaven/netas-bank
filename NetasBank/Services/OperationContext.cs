@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using NetasBank.Banks;
+﻿using NetasBank.Banks;
 using NetasBank.Context;
 using NetasBank.Enums;
 using NetasBank.Requests;

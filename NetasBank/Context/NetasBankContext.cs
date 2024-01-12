@@ -1,5 +1,4 @@
-﻿
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using NetasBank.Configurations;
 using NetasBank.Models;
 
@@ -9,7 +8,7 @@ public class NetasBankContext : DbContext
     public DbSet<TransactionDetailsModel> TransactionDetails { get; set; }
     public DbSet<TransactionsModel> Transactions { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.UseNpgsql("Host=localhost;Database=netas;Username=postgres;Password=1234");
+            => optionsBuilder.UseNpgsql(Environment.GetEnvironmentVariable("ConnStr"));
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new TransactionDetailsModelConfiguration());

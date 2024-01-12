@@ -1,4 +1,8 @@
+using Microsoft.EntityFrameworkCore;
+using NetasBank.Context;
 using NetasBank.Services;
+
+Environment.SetEnvironmentVariable("ConnStr", "Host=localhost;Database=netas;Username=postgres;Password=1234");
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +15,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddTransient<IBankService, BankService>();
+
+builder.Services.AddDbContextPool<NetasBankContext>(options =>
+           options.UseNpgsql(Environment.GetEnvironmentVariable("ConnStr")));
 
 var app = builder.Build();
 
