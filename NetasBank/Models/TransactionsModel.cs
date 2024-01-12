@@ -3,7 +3,7 @@
 namespace NetasBank.Models;
 public sealed class TransactionsModel : BaseModel
 {
-    public int BankId { get; set; }
+    public BankEnum BankId { get; set; }
     public int TotalAmount { get; set; }
     public int NetAmount { get; set; }
     public TransactionStatus TxStatus { get; set; }

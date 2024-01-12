@@ -1,19 +1,69 @@
-﻿using NetasBank.Requests;
+﻿using Microsoft.EntityFrameworkCore;
+using NetasBank.Context;
+using NetasBank.Extensions;
+using NetasBank.Models;
+using NetasBank.Requests;
 
 namespace NetasBank.Banks;
 public sealed class Akbank : BaseBank
 {
-    public override Task<bool> Cancel(CancelTransactionRequestRecord request)
+    private readonly NetasBankContext _context;
+    public Akbank(NetasBankContext context)
+    {
+        _context = context;
+    }
+    public async override Task<bool> Cancel(CancelTransactionRequestRecord request)
     {
         throw new NotImplementedException();
     }
 
-    public override Task<bool> Pay(CreateTransactionDetailsRequestRecord request)
+    public async override Task<bool> Pay(CreateTransactionDetailsRequestRecord request)
     {
-        throw new NotImplementedException();
+        var transaction = await _context.Transactions.FirstOrDefaultAsync(x => x.Id == request.TransactionId && x.BankId == Enums.BankEnum.Akbank);
+        if (transaction == null)
+        {
+            var tx = new TransactionsModel();
+            tx.TotalAmount = request.Amount;
+            tx.NetAmount = request.Amount;
+            tx.OrderReference = StringExtensions.RandomString(10);
+            tx.BankId = request.BankId;
+            tx.TransactionDate = DateTime.UtcNow;
+            tx.TxStatus = Enums.TransactionStatus.Success;
+            await _context.Transactions.AddAsync(tx);
+
+            var txDetail = new TransactionDetailsModel();
+            txDetail.TransactionId = tx.Id;
+            txDetail.TxType = Enums.TransactionType.Sale;
+            txDetail.Amount = request.Amount;
+            txDetail.TxStatus = Enums.TransactionStatus.Success;
+            await _context.TransactionDetails.AddAsync(txDetail);
+
+            await _context.SaveChangesAsync();
+        }
+        else
+        {
+            transaction.NetAmount += request.Amount;
+            transaction.TotalAmount += request.Amount;
+            transaction.OrderReference = StringExtensions.RandomString(10);
+            transaction.BankId = request.BankId;
+            transaction.TransactionDate = DateTime.UtcNow;
+            transaction.TxStatus = Enums.TransactionStatus.Success;
+            _context.Transactions.Update(transaction);
+
+            var txDetail = new TransactionDetailsModel();
+            txDetail.TransactionId = transaction.Id;
+            txDetail.TxType = Enums.TransactionType.Sale;
+            txDetail.Amount = request.Amount;
+            txDetail.TxStatus = Enums.TransactionStatus.Success;
+            _context.TransactionDetails.Add(txDetail);
+
+            await _context.SaveChangesAsync();
+        }
+
+        return true;
     }
 
-    public override Task<bool> Refund(RefundTransactionRequestRecord request)
+    public async override Task<bool> Refund(RefundTransactionRequestRecord request)
     {
         throw new NotImplementedException();
     }

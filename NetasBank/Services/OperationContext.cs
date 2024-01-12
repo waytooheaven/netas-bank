@@ -1,27 +1,32 @@
-﻿using NetasBank.Banks;
+﻿using Microsoft.EntityFrameworkCore;
+using NetasBank.Banks;
+using NetasBank.Context;
+using NetasBank.Enums;
 using NetasBank.Requests;
 
 namespace NetasBank.Services;
 public sealed class OperationContext
 {
-    private readonly Dictionary<int, BaseBank> _operationStrategy = new Dictionary<int, BaseBank>();
+    private readonly Dictionary<BankEnum, BaseBank> _operationStrategy = new Dictionary<BankEnum, BaseBank>();
+    private readonly NetasBankContext _context;
 
-    public OperationContext()
+    public OperationContext(NetasBankContext context)
     {
-        _operationStrategy.Add(1, new Garanti());
-        _operationStrategy.Add(2, new YapiKredi());
-        _operationStrategy.Add(3, new Akbank());
+        _context = context;
+        _operationStrategy.Add(BankEnum.Garanti, new Garanti(_context));
+        _operationStrategy.Add(BankEnum.YapiKredi, new YapiKredi(_context));
+        _operationStrategy.Add(BankEnum.Akbank, new Akbank(_context));
     }
 
-    public async Task<bool> Pay(int searchType, CreateTransactionDetailsRequestRecord request)
+    public async Task<bool> Pay(BankEnum searchType, CreateTransactionDetailsRequestRecord request)
     {
         return await _operationStrategy[searchType].Pay(request);
     }
-    public async Task<bool> Cancel(int searchType, CancelTransactionRequestRecord request)
+    public async Task<bool> Cancel(BankEnum searchType, CancelTransactionRequestRecord request)
     {
         return await _operationStrategy[searchType].Cancel(request);
     }
-    public async Task<bool> Refund(int searchType, RefundTransactionRequestRecord request)
+    public async Task<bool> Refund(BankEnum searchType, RefundTransactionRequestRecord request)
     {
         return await _operationStrategy[searchType].Refund(request);
     }
