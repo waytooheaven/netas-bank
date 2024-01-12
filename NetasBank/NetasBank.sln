@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34408.163
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetasBank", "NetasBank.csproj", "{7201397C-6770-461E-B548-6F238C2DBB3D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7201397C-6770-461E-B548-6F238C2DBB3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7201397C-6770-461E-B548-6F238C2DBB3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7201397C-6770-461E-B548-6F238C2DBB3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7201397C-6770-461E-B548-6F238C2DBB3D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {63C6AB5C-0367-4EBD-894F-CA52F7E7B142}
+	EndGlobalSection
+EndGlobal

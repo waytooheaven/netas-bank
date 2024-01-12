@@ -1,0 +1,6 @@
+@NetasBank_HostAddress = http://localhost:5110
+
+GET {{NetasBank_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
