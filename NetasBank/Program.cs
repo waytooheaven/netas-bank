@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using NetasBank.Context;
+using NetasBank.Filters;
 using NetasBank.Services;
 
 Environment.SetEnvironmentVariable("ConnStr", "Host=localhost;Database=netas;Username=postgres;Password=1234");
@@ -14,6 +15,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddTransient<IBankService, BankService>();
+builder.Services.AddTransient<IsBankBelongsToTransactionActionFilter>();
 
 builder.Services.AddAutoMapper(typeof(Program));
 

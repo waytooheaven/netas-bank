@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using NetasBank.Filters;
 using NetasBank.Requests;
 using NetasBank.Services;
 
@@ -13,6 +14,7 @@ public class BankController : ControllerBase
         _bankService = bankService;
     }
 
+    [ServiceFilter(typeof(IsBankBelongsToTransactionActionFilter))]
     [HttpPost("pay")]
     public async Task<ActionResult> Pay([FromBody] CreateTransactionDetailsRequestRecord request)
     {
@@ -20,6 +22,7 @@ public class BankController : ControllerBase
         return Ok();
     }
 
+    [ServiceFilter(typeof(IsBankBelongsToTransactionActionFilter))]
     [HttpPost("refund")]
     public async Task<ActionResult> Refund([FromBody] RefundTransactionRequestRecord request)
     {
@@ -27,6 +30,7 @@ public class BankController : ControllerBase
         return Ok();
     }
 
+    [ServiceFilter(typeof(IsBankBelongsToTransactionActionFilter))]
     [HttpPost("cancel")]
     public async Task<ActionResult> Cancel([FromBody] CancelTransactionRequestRecord request)
     {
