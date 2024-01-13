@@ -60,13 +60,13 @@ public sealed class Akbank : BaseBank
             tx.BankId = request.BankId;
             tx.TransactionDate = DateTime.UtcNow;
             tx.TxStatus = Enums.TransactionStatus.Success;
-            await _context.Transactions.AddAsync(tx);
 
             var txDetail = new TransactionDetailsModel();
             txDetail.TransactionId = tx.Id;
             txDetail.TxType = Enums.TransactionType.Sale;
             txDetail.Amount = request.Amount;
             txDetail.TxStatus = Enums.TransactionStatus.Success;
+            txDetail.Transaction = tx;
             await _context.TransactionDetails.AddAsync(txDetail);
 
             await _context.SaveChangesAsync();
