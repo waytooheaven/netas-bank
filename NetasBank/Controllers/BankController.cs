@@ -20,6 +20,7 @@ public class BankController : ControllerBase
     /// <returns>Returns success</returns>
     // POST: api/pay
     [ServiceFilter(typeof(IsBankBelongsToTransactionActionFilter))]
+    [ServiceFilter(typeof(IsAmountBiggerThanZero))]
     [HttpPost("pay")]
     public async Task<ActionResult> Pay([FromBody] CreateTransactionDetailsRequestRecord request)
     {
@@ -33,6 +34,7 @@ public class BankController : ControllerBase
     /// <returns>Returns success</returns>
     // POST: api/refund
     [ServiceFilter(typeof(IsBankBelongsToTransactionActionFilter))]
+    [ServiceFilter(typeof(IsAmountBiggerThanZero))]
     [HttpPost("refund")]
     public async Task<ActionResult> Refund([FromBody] RefundTransactionRequestRecord request)
     {
@@ -46,6 +48,7 @@ public class BankController : ControllerBase
     /// <returns>Returns success</returns>
     // POST: api/cancel
     [ServiceFilter(typeof(IsBankBelongsToTransactionActionFilter))]
+    [ServiceFilter(typeof(IsAmountBiggerThanZero))]
     [HttpPost("cancel")]
     public async Task<ActionResult> Cancel([FromBody] CancelTransactionRequestRecord request)
     {

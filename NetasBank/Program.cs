@@ -16,6 +16,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddTransient<IBankService, BankService>();
 builder.Services.AddTransient<IsBankBelongsToTransactionActionFilter>();
+builder.Services.AddTransient<IsAmountBiggerThanZero>();
 
 builder.Services.AddAutoMapper(typeof(Program));
 
