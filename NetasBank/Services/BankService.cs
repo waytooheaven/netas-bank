@@ -57,7 +57,7 @@ public class BankService : IBankService
             query = query.Where(x => x.TxStatus == request.TransactionStatus).Include(x => x.TransactionDetails);
         }
 
-        return _mapper.Map<ICollection<ReportingResponse>>(await query.ToListAsync());
+        return _mapper.Map<ICollection<ReportingResponse>>(await query.AsNoTracking().ToListAsync());
 
     }
 }
