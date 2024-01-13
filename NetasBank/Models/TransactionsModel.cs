@@ -9,5 +9,5 @@ public sealed class TransactionsModel : BaseModel
     public TransactionStatus TxStatus { get; set; }
     public string? OrderReference { get; set; }
     public DateTime TransactionDate { get; set; }
-    public ICollection<TransactionDetailsModel> TransactionDetails { get; set; } = new List<TransactionDetailsModel>();
+    public ICollection<TransactionDetailsModel>? TransactionDetails { get; set; }
 }

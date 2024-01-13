@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using NetasBank.Context;
 using NetasBank.Services;
@@ -14,6 +15,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddTransient<IBankService, BankService>();
+
+builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddDbContextPool<NetasBankContext>(options =>
            options.UseNpgsql(Environment.GetEnvironmentVariable("ConnStr")));

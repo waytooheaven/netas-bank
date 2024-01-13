@@ -33,4 +33,11 @@ public class BankController : ControllerBase
         await _bankService.Cancel(request);
         return Ok();
     }
+
+    [HttpPost("report")]
+    public async Task<ActionResult> Report([FromBody] ReportingRequest request)
+    {
+        var result = await _bankService.Report(request);
+        return Ok(result);
+    }
 }

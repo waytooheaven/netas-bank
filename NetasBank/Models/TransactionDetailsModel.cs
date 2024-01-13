@@ -7,5 +7,5 @@ public sealed class TransactionDetailsModel : BaseModel
     public TransactionType TxType { get; set; }
     public TransactionStatus TxStatus { get; set; }
     public int Amount { get; set; }
-    public TransactionsModel Transaction { get; set; } = new TransactionsModel();
+    public TransactionsModel? Transaction { get; set; }
 }
