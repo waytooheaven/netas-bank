@@ -35,26 +35,26 @@ public class BankService : IBankService
 
     public async Task<ICollection<ReportingResponse>> Report(ReportingRequest request)
     {
-        var query = _context.Transactions.AsQueryable();
+        var query = _context.Transactions.Include(x => x.TransactionDetails).AsQueryable();
         if (request.BankId != null)
         {
-            query = query.Where(x => x.BankId == request.BankId).Include(x => x.TransactionDetails);
+            query = query.Where(x => x.BankId == request.BankId);
         }
         if (request.TransactionDateBegin != null)
         {
-            query = query.Where(x => x.TransactionDate >= request.TransactionDateBegin).Include(x => x.TransactionDetails);
+            query = query.Where(x => x.TransactionDate >= request.TransactionDateBegin);
         }
         if (request.TransactionDateEnd != null)
         {
-            query = query.Where(x => x.TransactionDate <= request.TransactionDateEnd).Include(x => x.TransactionDetails);
+            query = query.Where(x => x.TransactionDate <= request.TransactionDateEnd);
         }
         if (!string.IsNullOrEmpty(request.OrderReference))
         {
-            query = query.Where(x => x.OrderReference == request.OrderReference).Include(x => x.TransactionDetails);
+            query = query.Where(x => x.OrderReference == request.OrderReference);
         }
         if (request.TransactionStatus != null)
         {
-            query = query.Where(x => x.TxStatus == request.TransactionStatus).Include(x => x.TransactionDetails);
+            query = query.Where(x => x.TxStatus == request.TransactionStatus);
         }
 
         return _mapper.Map<ICollection<ReportingResponse>>(await query.AsNoTracking().ToListAsync());
