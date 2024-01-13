@@ -18,7 +18,7 @@ namespace NetasBank.Filters
             var payload = context.ActionArguments["request"] as RequestRecord;
             if (payload != null)
             {
-                if(payload.Amount <= 0)
+                if (payload.Amount <= 0)
                 {
                     throw new ApiException("The amount must be bigger than 0");
                 }
