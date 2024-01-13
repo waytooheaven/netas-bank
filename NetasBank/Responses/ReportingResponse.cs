@@ -1,5 +1,4 @@
-﻿using NetasBank.Models;
-using System.Transactions;
+﻿using System.Transactions;
 
 namespace NetasBank.Responses;
 public class ReportingResponse : ReportingBase

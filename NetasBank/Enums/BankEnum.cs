@@ -1,6 +1,4 @@
-﻿using NetasBank.Banks;
-
-namespace NetasBank.Enums;
+﻿namespace NetasBank.Enums;
 public enum BankEnum
 {
     Akbank = 1,

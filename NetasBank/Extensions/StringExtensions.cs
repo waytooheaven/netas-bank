@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace NetasBank.Extensions
+﻿namespace NetasBank.Extensions
 {
     public static class StringExtensions
     {
