@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NetasBank.Context;
+using NetasBank.Exceptions;
 using NetasBank.Extensions;
 using NetasBank.Models;
 using NetasBank.Requests;
@@ -13,9 +14,39 @@ public sealed class Garanti : BaseBank
         _context = context;
     }
 
-    public override Task<bool> Cancel(CancelTransactionRequestRecord request)
+    public async override Task<bool> Cancel(CancelTransactionRequestRecord request)
     {
-        throw new NotImplementedException();
+        var transaction = await _context.Transactions.FirstOrDefaultAsync(x => x.Id == request.TransactionId && x.BankId == Enums.BankEnum.Garanti);
+
+        if (transaction == null)
+        {
+            throw new ApiException($"Transaction {request.TransactionId} does not exist");
+        }
+
+        if (transaction.NetAmount - request.Amount < 0 ||
+       transaction.TotalAmount - request.Amount < 0)
+        {
+            throw new ApiException($"Too much decrease in the total amount");
+        }
+
+        var txDetail = new TransactionDetailsModel();
+        txDetail.TransactionId = transaction.Id;
+        txDetail.TxType = Enums.TransactionType.Cancel;
+        txDetail.Amount = request.Amount;
+        txDetail.TxStatus = Enums.TransactionStatus.Success;
+        _context.TransactionDetails.Add(txDetail);
+
+        transaction.NetAmount -= request.Amount;
+        transaction.TotalAmount -= request.Amount;
+        transaction.OrderReference = StringExtensions.RandomString(10);
+        transaction.BankId = request.BankId;
+        transaction.TransactionDate = DateTime.UtcNow;
+        transaction.TxStatus = Enums.TransactionStatus.Success;
+        _context.Transactions.Update(transaction);
+
+        await _context.SaveChangesAsync();
+
+        return true;
     }
 
     public async override Task<bool> Pay(CreateTransactionDetailsRequestRecord request)
@@ -64,8 +95,38 @@ public sealed class Garanti : BaseBank
         return true;
     }
 
-    public override Task<bool> Refund(RefundTransactionRequestRecord request)
+    public async override Task<bool> Refund(RefundTransactionRequestRecord request)
     {
-        throw new NotImplementedException();
+        var transaction = await _context.Transactions.FirstOrDefaultAsync(x => x.Id == request.TransactionId && x.BankId == Enums.BankEnum.Garanti);
+
+        if (transaction == null)
+        {
+            throw new ApiException($"Transaction {request.TransactionId} does not exist");
+        }
+
+        if (transaction.NetAmount - request.Amount < 0 ||
+       transaction.TotalAmount - request.Amount < 0)
+        {
+            throw new ApiException($"Too much decrease in the total amount");
+        }
+
+        var txDetail = new TransactionDetailsModel();
+        txDetail.TransactionId = transaction.Id;
+        txDetail.TxType = Enums.TransactionType.Refund;
+        txDetail.Amount = request.Amount;
+        txDetail.TxStatus = Enums.TransactionStatus.Success;
+        _context.TransactionDetails.Add(txDetail);
+
+        transaction.NetAmount -= request.Amount;
+        transaction.TotalAmount -= request.Amount;
+        transaction.OrderReference = StringExtensions.RandomString(10);
+        transaction.BankId = request.BankId;
+        transaction.TransactionDate = DateTime.UtcNow;
+        transaction.TxStatus = Enums.TransactionStatus.Success;
+        _context.Transactions.Update(transaction);
+
+        await _context.SaveChangesAsync();
+
+        return true;
     }
 }
