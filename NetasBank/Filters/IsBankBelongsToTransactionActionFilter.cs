@@ -2,7 +2,6 @@
 using NetasBank.Context;
 using NetasBank.Exceptions;
 using NetasBank.Requests;
-using System.Diagnostics;
 
 namespace NetasBank.Filters
 {
@@ -19,6 +18,11 @@ namespace NetasBank.Filters
             var payload = context.ActionArguments["request"] as RequestRecord;
             if (payload != null)
             {
+                if(payload.Amount <= 0)
+                {
+                    throw new ApiException("The amount must be bigger than 0");
+                }
+
                 var transaction = _context.Transactions.FirstOrDefault(x => x.Id == payload.TransactionId);
                 if (transaction != null)
                 {

@@ -14,6 +14,11 @@ public class BankController : ControllerBase
         _bankService = bankService;
     }
 
+    /// <summary>
+    /// Makes a payment
+    /// </summary>
+    /// <returns>Returns success</returns>
+    // POST: api/pay
     [ServiceFilter(typeof(IsBankBelongsToTransactionActionFilter))]
     [HttpPost("pay")]
     public async Task<ActionResult> Pay([FromBody] CreateTransactionDetailsRequestRecord request)
@@ -22,6 +27,11 @@ public class BankController : ControllerBase
         return Ok();
     }
 
+    /// <summary>
+    /// Makes a refund
+    /// </summary>
+    /// <returns>Returns success</returns>
+    // POST: api/refund
     [ServiceFilter(typeof(IsBankBelongsToTransactionActionFilter))]
     [HttpPost("refund")]
     public async Task<ActionResult> Refund([FromBody] RefundTransactionRequestRecord request)
@@ -30,6 +40,11 @@ public class BankController : ControllerBase
         return Ok();
     }
 
+    /// <summary>
+    /// Cancels a transaction
+    /// </summary>
+    /// <returns>Returns success</returns>
+    // POST: api/cancel
     [ServiceFilter(typeof(IsBankBelongsToTransactionActionFilter))]
     [HttpPost("cancel")]
     public async Task<ActionResult> Cancel([FromBody] CancelTransactionRequestRecord request)
