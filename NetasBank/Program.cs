@@ -1,4 +1,3 @@
-using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using NetasBank.Context;
 using NetasBank.Filters;

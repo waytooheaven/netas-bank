@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
-using NetasBank.Context;
 using NetasBank.Exceptions;
 using NetasBank.Requests;
 
