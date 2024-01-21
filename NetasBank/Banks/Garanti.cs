@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NetasBank.Common;
 using NetasBank.Context;
+using NetasBank.Enums;
 using NetasBank.Exceptions;
 using NetasBank.Extensions;
 using NetasBank.Models;
@@ -9,6 +11,7 @@ namespace NetasBank.Banks;
 public sealed class Garanti : BaseBank
 {
     private readonly NetasBankContext _context;
+    private readonly BankEnum MasterBank = BankEnum.Garanti;
     public Garanti(NetasBankContext context)
     {
         _context = context;
@@ -16,117 +19,16 @@ public sealed class Garanti : BaseBank
 
     public async override Task<bool> Cancel(CancelTransactionRequestRecord request)
     {
-        var transaction = await _context.Transactions.FirstOrDefaultAsync(x => x.Id == request.TransactionId && x.BankId == Enums.BankEnum.Garanti);
-
-        if (transaction == null)
-        {
-            throw new ApiException($"Transaction {request.TransactionId} does not exist");
-        }
-
-        if (transaction.NetAmount - request.Amount < 0 ||
-       transaction.TotalAmount - request.Amount < 0)
-        {
-            throw new ApiException($"Too much decrease in the total amount");
-        }
-
-        var txDetail = new TransactionDetailsModel();
-        txDetail.TransactionId = transaction.Id;
-        txDetail.TxType = Enums.TransactionType.Cancel;
-        txDetail.Amount = request.Amount;
-        txDetail.TxStatus = Enums.TransactionStatus.Success;
-        await _context.TransactionDetails.AddAsync(txDetail);
-
-        transaction.NetAmount -= request.Amount;
-        transaction.TotalAmount -= request.Amount;
-        transaction.OrderReference = StringExtensions.RandomString(10);
-        transaction.BankId = request.BankId;
-        transaction.TransactionDate = DateTime.UtcNow;
-        transaction.TxStatus = Enums.TransactionStatus.Success;
-        _context.Transactions.Update(transaction);
-
-        await _context.SaveChangesAsync();
-
-        return true;
+        return await TheEye.Cancel(_context, request, MasterBank);
     }
 
     public async override Task<bool> Pay(CreateTransactionDetailsRequestRecord request)
     {
-        var transaction = await _context.Transactions.FirstOrDefaultAsync(x => x.Id == request.TransactionId && x.BankId == Enums.BankEnum.Garanti);
-        if (transaction == null)
-        {
-            var tx = new TransactionsModel();
-            tx.TotalAmount = request.Amount;
-            tx.NetAmount = request.Amount;
-            tx.OrderReference = StringExtensions.RandomString(10);
-            tx.BankId = request.BankId;
-            tx.TransactionDate = DateTime.UtcNow;
-            tx.TxStatus = Enums.TransactionStatus.Success;
-            await _context.Transactions.AddAsync(tx);
-
-            var txDetail = new TransactionDetailsModel();
-            txDetail.TransactionId = tx.Id;
-            txDetail.TxType = Enums.TransactionType.Sale;
-            txDetail.Amount = request.Amount;
-            txDetail.TxStatus = Enums.TransactionStatus.Success;
-            await _context.TransactionDetails.AddAsync(txDetail);
-
-            await _context.SaveChangesAsync();
-        }
-        else
-        {
-            transaction.NetAmount += request.Amount;
-            transaction.TotalAmount += request.Amount;
-            transaction.OrderReference = StringExtensions.RandomString(10);
-            transaction.BankId = request.BankId;
-            transaction.TransactionDate = DateTime.UtcNow;
-            transaction.TxStatus = Enums.TransactionStatus.Success;
-            _context.Transactions.Update(transaction);
-
-            var txDetail = new TransactionDetailsModel();
-            txDetail.TransactionId = transaction.Id;
-            txDetail.TxType = Enums.TransactionType.Sale;
-            txDetail.Amount = request.Amount;
-            txDetail.TxStatus = Enums.TransactionStatus.Success;
-            await _context.TransactionDetails.AddAsync(txDetail);
-
-            await _context.SaveChangesAsync();
-        }
-
-        return true;
+        return await TheEye.Pay(_context, request, MasterBank);
     }
 
     public async override Task<bool> Refund(RefundTransactionRequestRecord request)
     {
-        var transaction = await _context.Transactions.FirstOrDefaultAsync(x => x.Id == request.TransactionId && x.BankId == Enums.BankEnum.Garanti);
-
-        if (transaction == null)
-        {
-            throw new ApiException($"Transaction {request.TransactionId} does not exist");
-        }
-
-        if (transaction.NetAmount - request.Amount < 0 ||
-       transaction.TotalAmount - request.Amount < 0)
-        {
-            throw new ApiException($"Too much decrease in the total amount");
-        }
-
-        var txDetail = new TransactionDetailsModel();
-        txDetail.TransactionId = transaction.Id;
-        txDetail.TxType = Enums.TransactionType.Refund;
-        txDetail.Amount = request.Amount;
-        txDetail.TxStatus = Enums.TransactionStatus.Success;
-        await _context.TransactionDetails.AddAsync(txDetail);
-
-        transaction.NetAmount -= request.Amount;
-        transaction.TotalAmount -= request.Amount;
-        transaction.OrderReference = StringExtensions.RandomString(10);
-        transaction.BankId = request.BankId;
-        transaction.TransactionDate = DateTime.UtcNow;
-        transaction.TxStatus = Enums.TransactionStatus.Success;
-        _context.Transactions.Update(transaction);
-
-        await _context.SaveChangesAsync();
-
-        return true;
+        return await TheEye.Refund(_context, request, MasterBank);
     }
 }
