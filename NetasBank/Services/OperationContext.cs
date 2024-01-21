@@ -7,9 +7,9 @@ namespace NetasBank.Services;
 public sealed class OperationContext
 {
     private readonly Dictionary<BankEnum, BaseBank> _operationStrategy = new Dictionary<BankEnum, BaseBank>();
-    private readonly NetasBankContext _context;
+    private readonly TheMasterContext _context;
 
-    public OperationContext(NetasBankContext context)
+    public OperationContext(TheMasterContext context)
     {
         _context = context;
         _operationStrategy.Add(BankEnum.Garanti, new Garanti(_context));

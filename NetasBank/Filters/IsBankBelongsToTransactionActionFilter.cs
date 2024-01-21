@@ -7,9 +7,9 @@ namespace NetasBank.Filters
 {
     public class IsBankBelongsToTransactionActionFilter : ActionFilterAttribute
     {
-        private NetasBankContext _context;
+        private TheMasterContext _context;
 
-        public IsBankBelongsToTransactionActionFilter(NetasBankContext context)
+        public IsBankBelongsToTransactionActionFilter(TheMasterContext context)
         {
             _context = context;
         }

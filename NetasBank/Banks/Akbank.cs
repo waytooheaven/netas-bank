@@ -6,9 +6,9 @@ using NetasBank.Requests;
 namespace NetasBank.Banks;
 public sealed class Akbank : BaseBank
 {
-    private readonly NetasBankContext _context;
+    private readonly TheMasterContext _context;
     private readonly BankEnum MasterBank = BankEnum.Akbank;
-    public Akbank(NetasBankContext context)
+    public Akbank(TheMasterContext context)
     {
         _context = context;
     }

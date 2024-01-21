@@ -6,9 +6,9 @@ using NetasBank.Requests;
 namespace NetasBank.Banks;
 public sealed class YapiKredi : BaseBank
 {
-    private readonly NetasBankContext _context;
+    private readonly TheMasterContext _context;
     private readonly BankEnum MasterBank = BankEnum.YapiKredi;
-    public YapiKredi(NetasBankContext context)
+    public YapiKredi(TheMasterContext context)
     {
         _context = context;
     }

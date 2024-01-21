@@ -7,9 +7,9 @@ using NetasBank.Responses;
 namespace NetasBank.Services;
 public class BankService : IBankService
 {
-    private readonly NetasBankContext _context;
+    private readonly TheMasterContext _context;
     private readonly IMapper _mapper;
-    public BankService(NetasBankContext context, IMapper mapper)
+    public BankService(TheMasterContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;

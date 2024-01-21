@@ -6,9 +6,9 @@ using NetasBank.Requests;
 namespace NetasBank.Banks;
 public sealed class Garanti : BaseBank
 {
-    private readonly NetasBankContext _context;
+    private readonly TheMasterContext _context;
     private readonly BankEnum MasterBank = BankEnum.Garanti;
-    public Garanti(NetasBankContext context)
+    public Garanti(TheMasterContext context)
     {
         _context = context;
     }

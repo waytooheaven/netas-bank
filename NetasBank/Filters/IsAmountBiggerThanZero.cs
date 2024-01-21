@@ -7,11 +7,8 @@ namespace NetasBank.Filters
 {
     public class IsAmountBiggerThanZero : ActionFilterAttribute
     {
-        private NetasBankContext _context;
-
-        public IsAmountBiggerThanZero(NetasBankContext context)
+        public IsAmountBiggerThanZero()
         {
-            _context = context;
         }
         public override void OnActionExecuting(ActionExecutingContext context)
         {
