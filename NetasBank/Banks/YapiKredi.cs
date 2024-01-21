@@ -1,10 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using NetasBank.Common;
+﻿using NetasBank.Common;
 using NetasBank.Context;
 using NetasBank.Enums;
-using NetasBank.Exceptions;
-using NetasBank.Extensions;
-using NetasBank.Models;
 using NetasBank.Requests;
 
 namespace NetasBank.Banks;

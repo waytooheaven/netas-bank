@@ -45,7 +45,7 @@ namespace NetasBank.Common
             return true;
         }
 
-        public static async  Task<bool> Pay(NetasBankContext _context, CreateTransactionDetailsRequestRecord request, BankEnum bankEnum)
+        public static async Task<bool> Pay(NetasBankContext _context, CreateTransactionDetailsRequestRecord request, BankEnum bankEnum)
         {
             var transaction = await _context.Transactions.FirstOrDefaultAsync(x => x.Id == request.TransactionId && x.BankId == bankEnum);
             if (transaction == null)
@@ -91,7 +91,7 @@ namespace NetasBank.Common
             return true;
         }
 
-        public static async  Task<bool> Refund(NetasBankContext _context, RefundTransactionRequestRecord request, BankEnum bankEnum)
+        public static async Task<bool> Refund(NetasBankContext _context, RefundTransactionRequestRecord request, BankEnum bankEnum)
         {
             var transaction = await _context.Transactions.FirstOrDefaultAsync(x => x.Id == request.TransactionId && x.BankId == bankEnum);
 
