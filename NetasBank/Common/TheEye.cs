@@ -25,11 +25,7 @@ namespace NetasBank.Common
                 throw new ApiException($"Too much decrease in the total amount");
             }
 
-            var txDetail = new TransactionDetailsModel();
-            txDetail.TransactionId = transaction.Id;
-            txDetail.TxType = Enums.TransactionType.Cancel;
-            txDetail.Amount = request.Amount;
-            txDetail.TxStatus = Enums.TransactionStatus.Success;
+            var txDetail = (new TransactionDetailsModel()).CreateTransactionDetailsModel(transaction, request, TransactionType.Cancel);
             await _context.TransactionDetails.AddAsync(txDetail);
 
             transaction.NetAmount -= request.Amount;
@@ -59,11 +55,7 @@ namespace NetasBank.Common
                 tx.TxStatus = Enums.TransactionStatus.Success;
                 await _context.Transactions.AddAsync(tx);
 
-                var txDetail = new TransactionDetailsModel();
-                txDetail.TransactionId = tx.Id;
-                txDetail.TxType = Enums.TransactionType.Sale;
-                txDetail.Amount = request.Amount;
-                txDetail.TxStatus = Enums.TransactionStatus.Success;
+                var txDetail = (new TransactionDetailsModel()).CreateTransactionDetailsModel(tx, request, TransactionType.Sale);
                 await _context.TransactionDetails.AddAsync(txDetail);
 
                 await _context.SaveChangesAsync();
@@ -106,11 +98,7 @@ namespace NetasBank.Common
                 throw new ApiException($"Too much decrease in the total amount");
             }
 
-            var txDetail = new TransactionDetailsModel();
-            txDetail.TransactionId = transaction.Id;
-            txDetail.TxType = Enums.TransactionType.Refund;
-            txDetail.Amount = request.Amount;
-            txDetail.TxStatus = Enums.TransactionStatus.Success;
+            var txDetail = (new TransactionDetailsModel()).CreateTransactionDetailsModel(transaction, request, TransactionType.Refund);
             await _context.TransactionDetails.AddAsync(txDetail);
 
             transaction.NetAmount -= request.Amount;
